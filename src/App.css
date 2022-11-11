@@ -1,0 +1,39 @@
+*, *::before, *::after{
+  box-sizing: border-box;
+}
+
+html, body{
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  overflow: hidden;
+}
+
+body{
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  font: menu;
+}
+
+div{
+  outline: none;
+  margin: 0;
+}
+
+.content{
+  height: 100vh;
+  display: flex;
+}
+
+.editor-part, .renderer {
+  min-height: 100%;
+  max-width: 50%;
+  flex-grow: 1;
+  overflow: scroll;
+  font-size: 16px;
+}
+
+.editor, .renderer{
+  padding: 0 10px;
+}
