@@ -3,11 +3,12 @@ import { useState } from 'react'
 import Editor, { loader } from "@monaco-editor/react"; // monaco editor react
 import * as monaco from "monaco-editor"; // monaco original repo
 
-//const { ipcRenderer } = require('electron') // from electronjs docs
-
+const { ipcRenderer } = window.require('electron') // from electronjs docs
+//import {ipcRenderer} from 'electron'
 
 
 function App() {
+
 
   loader.config({ monaco }); // To replace monaco-editor/react cdn's to local files
 
@@ -15,7 +16,8 @@ function App() {
 
   const setHTMLpart = () => { return { __html: EditorValue } } // return value
 
-  ///console.log(ipcRenderer.invoke('file:open'))
+    ipcRenderer.on('file:open', (event, msg) => setEditorValue(msg))
+
 
   return (
     <section className="content">
@@ -26,7 +28,8 @@ function App() {
           language="html"
           value={EditorValue}
           onChange={(newValue) => { setEditorValue(newValue) }}
-          className='editor' />
+          className='editor'
+        />
       </div>
       <div className="renderer" dangerouslySetInnerHTML={setHTMLpart()}></div>
     </section>
