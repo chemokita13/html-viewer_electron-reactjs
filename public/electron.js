@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Menu, dialog } = require('electron')
+const { app, BrowserWindow, Menu, dialog, ipcMain } = require('electron')
 const path = require('path');
 const isDev = require('electron-is-dev');
 let main;
@@ -10,6 +10,10 @@ const newfile = () => dialog.showOpenDialogSync({
         ]
     }]
 })
+
+const sendFilePath = (filepath) => {
+    ipcMain.handle('file:open', filepath)
+}
 
 
 // Menu Template
@@ -28,7 +32,11 @@ const templateMenu = [
                 label: 'Open file',
                 accelerator: 'Ctrl+O',
                 click() {
-                    console.log(newfile())
+                    const newFilePath = newfile()
+                    if (newFilePath) {
+                        sendFilePath(newFilePath[0])
+                        console.log('sent: '+ newFilePath)
+                    }
                 }
             }
         ]
@@ -43,9 +51,9 @@ app.on('ready', () => {
             contextIsolation: false
         }
     })
-    ///const mainMenu = Menu.buildFromTemplate(templateMenu);
+    const mainMenu = Menu.buildFromTemplate(templateMenu);
     // Set The Menu to the Main Window
-    ///Menu.setApplicationMenu(mainMenu);
+    Menu.setApplicationMenu(mainMenu);
     ///main.loadFile(__dirname + '/views/index.html')
     main.loadURL(isDev ? 'http://localhost:3000' : `file://${path.join(__dirname, '../build/index.html')}`);
     if (isDev) {

@@ -1,17 +1,21 @@
-import { useState } from 'react'
-import Editor, { loader } from "@monaco-editor/react"; // monaco editor
-import * as monaco from "monaco-editor";
-
-
 import './App.css' // styles
+import { useState } from 'react'
+import Editor, { loader } from "@monaco-editor/react"; // monaco editor react
+import * as monaco from "monaco-editor"; // monaco original repo
+
+//const { ipcRenderer } = require('electron') // from electronjs docs
+
+
 
 function App() {
 
-  loader.config({ monaco });
+  loader.config({ monaco }); // To replace monaco-editor/react cdn's to local files
 
   const [EditorValue, setEditorValue] = useState('')// default value
 
-  const setHTMLpart = () => { return { __html: EditorValue } }
+  const setHTMLpart = () => { return { __html: EditorValue } } // return value
+
+  ///console.log(ipcRenderer.invoke('file:open'))
 
   return (
     <section className="content">
